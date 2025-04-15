@@ -20,6 +20,7 @@ module.exports = {
                 type: Sequelize.TEXT('long')
             },
             contentMarkdown: {
+                allowNull: false,
                 type: Sequelize.TEXT('long')
             },
             description: {
