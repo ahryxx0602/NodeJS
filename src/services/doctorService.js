@@ -173,17 +173,17 @@ let bulkCreateSchedule = (data) => {
         });
 
         //convert date to timestamp
-        if (existing && existing.length > 0) {
-          existing = existing.map((item) => {
-            item.date = new Date(item.date).getTime();
-            return item;
-          });
-        }
+        // if (existing && existing.length > 0) {
+        //   existing = existing.map((item) => {
+        //     item.date = new Date(item.date).getTime();
+        //     return item;
+        //   });
+        // }
+
         //compare different data
         let toCreate = _.differenceWith(schedule, existing, (a, b) => {
           return a.timeType === b.timeType && +a.date === +b.date;
         });
-        console.log("check to create", toCreate);
 
         //Create new data
         if (toCreate && toCreate.length > 0) {
@@ -199,10 +199,46 @@ let bulkCreateSchedule = (data) => {
     }
   });
 };
+let getScheduleByDate = (doctorId, date) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!doctorId || !date) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required parameters",
+        });
+      } else {
+        let dataSchedule = await db.Schedule.findAll({
+          where: {
+            doctorId: doctorId,
+            date: date,
+          },
+          include: [
+            {
+              model: db.allcode,
+              as: "timeTypeData",
+              attributes: ["valueEn", "valueVi"],
+            },
+          ],
+          raw: false,
+          nest: true,
+        });
+        if (!dataSchedule) dataSchedule = [];
+        resolve({
+          errCode: 0,
+          dataSchedule,
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctors: getAllDoctors,
   saveDetailInfoDoctor: saveDetailInfoDoctor,
   getDetailDoctorById: getDetailDoctorById,
   bulkCreateSchedule,
+  getScheduleByDate,
 };
