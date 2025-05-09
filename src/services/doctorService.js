@@ -64,13 +64,20 @@ let saveDetailInfoDoctor = (InputData) => {
         !InputData.doctorId ||
         !InputData.contentHTML ||
         !InputData.contentMarkdown ||
-        !InputData.action
+        !InputData.action ||
+        !InputData.selectedPrice ||
+        !InputData.selectedPayment ||
+        !InputData.selectedProvince ||
+        !InputData.nameClinic ||
+        !InputData.addressClinic ||
+        !InputData.note
       ) {
         resolve({
           errCode: 1,
           errMessage: "Missing required parameters",
         });
       } else {
+        //UPSERT TO MARKDOWN
         if (InputData.action === "CREATE") {
           await db.Markdown.create({
             contentHTML: InputData.contentHTML,
@@ -91,6 +98,41 @@ let saveDetailInfoDoctor = (InputData) => {
             await doctorMarkdown.save();
           }
         }
+
+        //UPSERT TO Doctor_Info_Table
+        let doctorInfo = await db.Doctor_Infor.findOne({
+          where: {
+            doctorId: InputData.doctorId,
+          },
+          raw: false,
+        });
+
+        if (doctorInfo) {
+          //UPDATE
+          doctorInfo.doctorId = InputData.doctorId;
+          doctorInfo.priceId = InputData.selectedPrice;
+          doctorInfo.provinceId = InputData.selectedProvince;
+          doctorInfo.paymentId = InputData.selectedPayment;
+
+          doctorInfo.nameClinic = InputData.nameClinic;
+          doctorInfo.addressClinic = InputData.addressClinic;
+          doctorInfo.note = InputData.note;
+
+          await doctorInfo.save();
+        } else {
+          //CREATE
+          await db.Doctor_Infor.create({
+            doctorId: InputData.doctorId,
+            priceId: InputData.selectedPrice,
+            provinceId: InputData.selectedProvince,
+            paymentId: InputData.selectedPayment,
+
+            nameClinic: InputData.nameClinic,
+            addressClinic: InputData.addressClinic,
+            note: InputData.note,
+          });
+        }
+
         resolve({
           errCode: 0,
           errMessage: "Save info doctor succeed",
