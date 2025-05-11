@@ -35,6 +35,7 @@ let initWebRoutes = (app) => {
     doctorController.getScheduleByDate
   );
 
+
   return app.use("/", route);
 };
 
