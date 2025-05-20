@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('booking', {
+        await queryInterface.createTable('bookings', {
             // statusId: DataTypes.STRING,
             // doctorId: DataTypes.INTEGER,
             // patientId: DataTypes.INTEGER,
@@ -23,8 +23,8 @@ module.exports = {
             patientId: {
                 type: Sequelize.INTEGER
             },
-            Date: {
-                type: Sequelize.DATE
+            date: {
+                type: Sequelize.STRING
             },
             timeType: {
                 type: Sequelize.STRING

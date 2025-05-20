@@ -230,6 +230,6 @@ module.exports = {
     createNewUser: createNewUser,
     deleteUser: deleteUser,
     updateUserData: updateUserData,
-    getAllCodeServices, getAllCodeServices,
+    getAllCodeServices: getAllCodeServices,
 
 }
