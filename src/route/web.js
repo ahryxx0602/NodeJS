@@ -3,6 +3,7 @@ import homeController from "../controllers/homeController";
 import userController from "../controllers/userController";
 import doctorController from "../controllers/doctorController";
 import patientController from "../controllers/patientController";
+import specialtyController from "../controllers/specialtyController";
 
 let route = express.Router();
 
@@ -55,5 +56,7 @@ route.post(
   "/api/verify-book-appointment",
   patientController.postVerifyBookAppointment
 );
+
+route.post("/api/create-new-specialty", specialtyController.createSpecialty);
 
 module.exports = initWebRoutes;
