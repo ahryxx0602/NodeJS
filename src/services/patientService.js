@@ -5,7 +5,13 @@ import emailService from "./emailService";
 let postBookAppointment = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (!data.email || !data.doctorId || !data.timeType || !data.date) {
+      if (
+        !data.email ||
+        !data.doctorId ||
+        !data.timeType ||
+        !data.date ||
+        !data.fullName
+      ) {
         resolve({
           errCode: 1,
           errMessage: "Missing require parameter!",
@@ -14,12 +20,10 @@ let postBookAppointment = (data) => {
         await emailService.sendEmail({
           receiverEmail: data.email,
           subject: "Booking appointment",
-          patientName: data.patientName,
-          time: data.time,
+          patientName: data.fullName,
+          time: data.timeString,
           doctorName: data.doctorName,
-          phoneNumber: data.phoneNumber,
-          email: data.email,
-          date: data.date,
+          language: data.language,
           redirectLink: `https://www.instagram.com/ahryxx._/`,
         });
         //Upsert patient

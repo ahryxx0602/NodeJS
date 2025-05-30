@@ -284,6 +284,11 @@ let getScheduleByDate = (doctorId, date) => {
               as: "timeTypeData",
               attributes: ["valueEn", "valueVi"],
             },
+            {
+              model: db.User,
+              as: "doctorData",
+              attributes: ["firstName", "lastName"],
+            },
           ],
           raw: false,
           nest: true,
@@ -347,73 +352,73 @@ let getExtraInfoDoctorById = (doctorId) => {
   });
 };
 
-let getProfileDoctorById=(inputId) =>{
-return new Promise(async(resolve, reject)=>{
- try {
-  if (!inputId) {
-    resolve({
-      errCode: -1,
-      errMessage: "Missing required parameter!",
-    });
-  }else {
-    let data = await db.User.findOne({
-      where: {
-        id: inputId,
-      },
-      attributes: {
-        exclude: ["password"],
-      },
-      include: [
-        {
-          model: db.Markdown,
-          attributes: ["contentHTML", "contentMarkdown", "description"],
-        }, 
-        {
-          model: db.allcode,
-          as: "positionData",
-          attributes: ["valueEn", "valueVi"],
-        },
-        {
-          model: db.Doctor_Infor,
+let getProfileDoctorById = (inputId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!inputId) {
+        resolve({
+          errCode: -1,
+          errMessage: "Missing required parameter!",
+        });
+      } else {
+        let data = await db.User.findOne({
+          where: {
+            id: inputId,
+          },
           attributes: {
-            exclude: ["id", "doctorId"],
+            exclude: ["password"],
           },
           include: [
             {
-              model: db.allcode,
-              as: "priceTypeData",
-              attributes: ["valueEn", "valueVi"],
+              model: db.Markdown,
+              attributes: ["contentHTML", "contentMarkdown", "description"],
             },
             {
               model: db.allcode,
-              as: "provinceTypeData",
+              as: "positionData",
               attributes: ["valueEn", "valueVi"],
             },
             {
-              model: db.allcode,
-              as: "paymentTypeData",
-              attributes: ["valueEn", "valueVi"],
+              model: db.Doctor_Infor,
+              attributes: {
+                exclude: ["id", "doctorId"],
+              },
+              include: [
+                {
+                  model: db.allcode,
+                  as: "priceTypeData",
+                  attributes: ["valueEn", "valueVi"],
+                },
+                {
+                  model: db.allcode,
+                  as: "provinceTypeData",
+                  attributes: ["valueEn", "valueVi"],
+                },
+                {
+                  model: db.allcode,
+                  as: "paymentTypeData",
+                  attributes: ["valueEn", "valueVi"],
+                },
+              ],
             },
           ],
-        },
-      ],
-      raw: false,
-      nest: true,
-    });
-    if (data && data.image) {
-      data.image = new Buffer(data.image, "base64").toString("binary");
+          raw: false,
+          nest: true,
+        });
+        if (data && data.image) {
+          data.image = new Buffer(data.image, "base64").toString("binary");
+        }
+        if (!data) data = {};
+        resolve({
+          errCode: 0,
+          data: data,
+        });
+      }
+    } catch (e) {
+      reject(e);
     }
-    if (!data) data = {};
-    resolve({
-      errCode: 0,
-      data: data,
-    });
-  }
- } catch (e) {
-  reject(e);
- } 
-})
-}
+  });
+};
 
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
