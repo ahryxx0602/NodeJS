@@ -51,4 +51,9 @@ route.post(
   patientController.postBookAppointment
 );
 
+route.post(
+  "/api/verify-book-appointment",
+  patientController.postVerifyBookAppointment
+);
+
 module.exports = initWebRoutes;
