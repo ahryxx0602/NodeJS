@@ -58,7 +58,10 @@ route.post(
 );
 
 route.post("/api/create-new-specialty", specialtyController.createSpecialty);
-
 route.get("/api/get-all-specialty", specialtyController.getAllSpecialty);
+route.get(
+  "/api/get-detail-specialty-by-id",
+  specialtyController.getDetailSpecialtyById
+);
 
 module.exports = initWebRoutes;
