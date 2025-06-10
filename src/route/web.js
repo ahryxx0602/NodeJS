@@ -66,7 +66,7 @@ route.get(
 );
 
 route.post("/api/create-new-clinic", clinicController.createClinic);
-// route.get("/api/get-all-clinic", clinicController.getAllClinic);
-// route.get("/api/get-detail-clinic-by-id", clinicController.getDetailClinicById);
+route.get("/api/get-all-clinic", clinicController.getAllClinic);
+route.get("/api/get-detail-clinic-by-id", clinicController.getDetailClinicById);
 
 module.exports = initWebRoutes;
