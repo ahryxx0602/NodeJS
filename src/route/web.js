@@ -45,28 +45,37 @@ let initWebRoutes = (app) => {
     "/api/get-profile-doctor-by-id",
     doctorController.getProfileDoctorById
   );
+
+  route.get(
+    "/api/get-list-patient-for-doctor",
+    doctorController.getListPatientForDoctor
+  );
+
+  route.post(
+    "/api/patient-book-appointment",
+    patientController.postBookAppointment
+  );
+
+  route.post(
+    "/api/verify-book-appointment",
+    patientController.postVerifyBookAppointment
+  );
+
+  route.post("/api/create-new-specialty", specialtyController.createSpecialty);
+  route.get("/api/get-all-specialty", specialtyController.getAllSpecialty);
+  route.get(
+    "/api/get-detail-specialty-by-id",
+    specialtyController.getDetailSpecialtyById
+  );
+
+  route.post("/api/create-new-clinic", clinicController.createClinic);
+  route.get("/api/get-all-clinic", clinicController.getAllClinic);
+  route.get(
+    "/api/get-detail-clinic-by-id",
+    clinicController.getDetailClinicById
+  );
+
   return app.use("/", route);
 };
-
-route.post(
-  "/api/patient-book-appointment",
-  patientController.postBookAppointment
-);
-
-route.post(
-  "/api/verify-book-appointment",
-  patientController.postVerifyBookAppointment
-);
-
-route.post("/api/create-new-specialty", specialtyController.createSpecialty);
-route.get("/api/get-all-specialty", specialtyController.getAllSpecialty);
-route.get(
-  "/api/get-detail-specialty-by-id",
-  specialtyController.getDetailSpecialtyById
-);
-
-route.post("/api/create-new-clinic", clinicController.createClinic);
-route.get("/api/get-all-clinic", clinicController.getAllClinic);
-route.get("/api/get-detail-clinic-by-id", clinicController.getDetailClinicById);
 
 module.exports = initWebRoutes;
