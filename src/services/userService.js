@@ -40,7 +40,7 @@ let handleUserLogin = (email, password) => {
           if (check) {
             userData.errCode = 0;
             userData.errMessage = `OK`;
-            delete user.password;
+            delete user.password; // Xóa trường password khi trả cho người dùng
             userData.user = user;
           } else {
             userData.errCode = 3;
